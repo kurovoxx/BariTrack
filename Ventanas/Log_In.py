@@ -33,7 +33,8 @@ class Log_in(ctk.CTkToplevel):
 
         self.geometry('500x350')
 
-        self.frame = ctk.CTkFrame(self.main_frame, fg_color=gris, corner_radius=0)
+        self.frame = ctk.CTkFrame(
+            self.main_frame, fg_color=gris, corner_radius=0)
         self.frame.pack(fill='both', expand=True)
 
         self.btn_iniciar = ctk.CTkButton(
@@ -53,10 +54,12 @@ class Log_in(ctk.CTkToplevel):
 
         self.geometry('500x350')
 
-        self.frame_iniciar = ctk.CTkFrame(self.main_frame, fg_color=gris, corner_radius=0)
+        self.frame_iniciar = ctk.CTkFrame(
+            self.main_frame, fg_color=gris, corner_radius=0)
         self.frame_iniciar.pack(fill='both', expand=True)
 
-        self.users_label = ctk.CTkLabel(self.frame_iniciar, text="Usuario", width=250, fg_color=azul_medio_oscuro, font=("Arial", 20))
+        self.users_label = ctk.CTkLabel(
+            self.frame_iniciar, text="Usuario", width=250, fg_color=azul_medio_oscuro, font=("Arial", 20))
         self.users_label.configure(corner_radius=20)
         self.users_label.pack(padx=3, pady=(25, 10))
 
@@ -76,12 +79,14 @@ class Log_in(ctk.CTkToplevel):
 
         self.geometry('500x700')
 
-        self.frame_registrar = ctk.CTkFrame(self.main_frame, fg_color=gris, corner_radius=0)
+        self.frame_registrar = ctk.CTkFrame(
+            self.main_frame, fg_color=gris, corner_radius=0)
         self.frame_registrar.pack(fill='both', expand=True)
 
-        self.nombre_label = ctk.CTkLabel(self.frame_registrar, text="Nombre", width=250, fg_color=azul_medio_oscuro, font=("Arial", 20))
+        self.nombre_label = ctk.CTkLabel(
+            self.frame_registrar, text="Nombre", width=250, fg_color=azul_medio_oscuro, font=("Arial", 20))
         self.nombre_label.configure(corner_radius=20)
-        self.nombre_label.pack(padx=3, pady=(20,2))
+        self.nombre_label.pack(padx=3, pady=(20, 2))
 
         self.nombre_entry = ctk.CTkEntry(
             self.frame_registrar, placeholder_text="Introduce tu nombre", width=250, corner_radius=20, fg_color=color_entry, text_color="black")
@@ -95,17 +100,19 @@ class Log_in(ctk.CTkToplevel):
         self.contra_entry = ctk.CTkEntry(
             self.frame_registrar, width=250, show="*", corner_radius=20, fg_color=color_entry, text_color="black")
         self.contra_entry.pack(padx=3, pady=(0, 10))
-        
-        self.gen_label = ctk.CTkLabel(self.frame_registrar, text="Sexo", width=250, fg_color=azul_medio_oscuro, font=("Arial", 20))
+
+        self.gen_label = ctk.CTkLabel(
+            self.frame_registrar, text="Sexo", width=250, fg_color=azul_medio_oscuro, font=("Arial", 20))
         self.gen_label.configure(corner_radius=20)
         self.gen_label.pack(padx=3, pady=(0, 4))
 
         self.gen_combobox = ctk.CTkComboBox(self.frame_registrar, values=[
                                             "Masculino", "Femenino"], width=250, corner_radius=20, fg_color=gris_label, button_color=verde_boton,
-                                         button_hover_color=verde_oscuro, text_color=negro_texto)
+                                            button_hover_color=verde_oscuro, text_color=negro_texto)
         self.gen_combobox.pack(padx=3, pady=(0, 12))
 
-        self.peso_label = ctk.CTkLabel(self.frame_registrar, text="Peso (kg)", width=250, fg_color=azul_medio_oscuro, font=("Arial", 20))
+        self.peso_label = ctk.CTkLabel(
+            self.frame_registrar, text="Peso (kg)", width=250, fg_color=azul_medio_oscuro, font=("Arial", 20))
         self.peso_label.configure(corner_radius=20)
         self.peso_label.pack(padx=3, pady=(0, 2))
 
@@ -138,10 +145,11 @@ class Log_in(ctk.CTkToplevel):
 
         self.lvl_actividad_combobox = ctk.CTkComboBox(self.frame_registrar, values=[
                                                       "Sedentario", "Ligero", "Moderado", "Intenso"], width=250, corner_radius=20, fg_color=gris_label, button_color=verde_boton,
-                                         button_hover_color=verde_oscuro, text_color=negro_texto)
+                                                      button_hover_color=verde_oscuro, text_color=negro_texto)
         self.lvl_actividad_combobox.pack(padx=3, pady=(0, 12))
 
-        self.edad_label = ctk.CTkLabel(self.frame_registrar, text="Fecha de Nacimiento", width=250, fg_color=azul_medio_oscuro, font=("Arial", 20))
+        self.edad_label = ctk.CTkLabel(self.frame_registrar, text="Fecha de Nacimiento",
+                                       width=250, fg_color=azul_medio_oscuro, font=("Arial", 20))
         self.edad_label.configure(corner_radius=20)
         self.edad_label.pack(padx=3, pady=(0, 2))
 
@@ -150,10 +158,10 @@ class Log_in(ctk.CTkToplevel):
             foreground='white', borderwidth=0, background=azul_medio_oscuro)
         self.fecha_nacimiento_entry.pack(padx=3, pady=(0, 10))
 
-
         self.guardar_button = ctk.CTkButton(
             self.frame_registrar, text="Guardar", command=self.guardar, width=250, corner_radius=20,
-            fg_color=verde_boton, hover_color=verde_oscuro, text_color=azul_medio_oscuro, font=("Arial", 18, 'bold')
+            fg_color=verde_boton, hover_color=verde_oscuro, text_color=azul_medio_oscuro, font=(
+                "Arial", 18, 'bold')
         )
         self.guardar_button.pack(pady=10)
 
@@ -168,7 +176,8 @@ class Log_in(ctk.CTkToplevel):
         contra = self.contra_entry.get()
 
         try:
-            fecha_nacimiento = datetime.strptime(self.fecha_nacimiento_entry.get(), '%d-%m-%Y')
+            fecha_nacimiento = datetime.strptime(
+                self.fecha_nacimiento_entry.get(), '%d-%m-%Y')
             edad = datetime.now().year - fecha_nacimiento.year
             if (datetime.now().month, datetime.now().day) < (fecha_nacimiento.month, fecha_nacimiento.day):
                 edad -= 1
@@ -184,20 +193,20 @@ class Log_in(ctk.CTkToplevel):
                 peso = int(self.peso_entry.get())
         except:
             CTkMessagebox(title="Advertencia", message="Ingrese un peso válido.",
-                        icon='warning', option_1="Ok")
+                          icon='warning', option_1="Ok")
             return
 
         try:
             estatura = int(self.altura_entry.get())
         except:
             CTkMessagebox(title="Advertencia", message="Ingrese una estatura válida.",
-                        icon='warning', option_1="Ok")
+                          icon='warning', option_1="Ok")
             return
 
         nivel_actividad = self.lvl_actividad_combobox.get()
         genero = self.gen_combobox.get()
         meta_cal = self.meta_entry.get()
-        
+
         try:
             if meta_cal == '' or meta_cal == None:
                 pass
@@ -205,7 +214,7 @@ class Log_in(ctk.CTkToplevel):
                 meta_cal = int(self.meta_entry.get())
         except:
             CTkMessagebox(title="Advertencia", message="Ingrese una meta de calorías válida.",
-                        icon='warning', option_1="Ok")
+                          icon='warning', option_1="Ok")
             return
 
         nombre_regex = r'^[\w\-. ]{1,15}$'
@@ -213,27 +222,27 @@ class Log_in(ctk.CTkToplevel):
 
         if nombre == '' or nombre == None:
             CTkMessagebox(title="Advertencia", message="Por favor ingrese un nombre.",
-                        icon='warning', option_1="Ok")
+                          icon='warning', option_1="Ok")
             return
 
         elif nombre in self.obtener_usuarios():
             CTkMessagebox(title="Advertencia", message="Este nombre de usuario no está disponible.",
-                        icon='warning', option_1="Ok")
+                          icon='warning', option_1="Ok")
             return
 
         elif not re.match(nombre_regex, nombre):
             CTkMessagebox(title="Advertencia", message="Su nombre de usuario es muy largo o contiene caracteres inválidos.",
-                        icon='warning', option_1="Ok")
+                          icon='warning', option_1="Ok")
             return
 
         elif contra == '' or contra == None:
             CTkMessagebox(title="Advertencia", message="Ingrese una contraseña.",
-                        icon='warning', option_1="Ok")
+                          icon='warning', option_1="Ok")
             return
 
         elif not re.match(contra_regex, contra):
             CTkMessagebox(title="Advertencia", message="Su contraseña debe tener entre 4 y 15 números o letras.",
-                        icon='warning', option_1="Ok")
+                          icon='warning', option_1="Ok")
             return
 
         directorio = f'./users/{self.nombre_entry.get()}'
@@ -242,21 +251,24 @@ class Log_in(ctk.CTkToplevel):
         self.insertar_usuario(self.nombre_entry.get(), self.contra_entry.get())
 
         try:
-            conn = sqlite3.connect(f"./users/{self.nombre_entry.get()}/alimentos.db")
+            conn = sqlite3.connect(
+                f"./users/{self.nombre_entry.get()}/alimentos.db")
             cursor = conn.cursor()
 
             sql = """
             INSERT INTO datos (nombre, estatura, nivel_actividad, genero, meta_cal, edad)
             VALUES (?, ?, ?, ?, ?, ?)
             """
-            valores = (nombre, estatura, nivel_actividad, genero, meta_cal, edad)
+            valores = (nombre, estatura, nivel_actividad,
+                       genero, meta_cal, edad)
             cursor.execute(sql, valores)
 
             query_peso = '''
             INSERT INTO peso (fecha, peso)
             VALUES (?, ?)
             '''
-            cursor.execute(query_peso, (datetime.now().strftime('%d-%m-%Y'), peso))
+            cursor.execute(
+                query_peso, (datetime.now().strftime('%d-%m-%Y'), peso))
 
             # Aquí se inserta el registro en la tabla mensajes con valor 0 para todos los campos
             query_mensajes = '''
@@ -271,19 +283,19 @@ class Log_in(ctk.CTkToplevel):
                 users.write(f'{nombre}')
 
             CTkMessagebox(title="Exito", message="Se ha registrado correctamente",
-                        icon='check', option_1="Ok")
+                          icon='check', option_1="Ok")
             self.win_iniciar()
 
         except FileNotFoundError:
             CTkMessagebox(title="Advertencia", message="Error al registrarse.",
-                        icon='warning', option_1="Ok")
+                          icon='warning', option_1="Ok")
 
         finally:
             conn.close()
 
     def limpiar_panel(self):
-            for widget in self.main_frame.winfo_children():
-                widget.destroy()
+        for widget in self.main_frame.winfo_children():
+            widget.destroy()
 
     def crear_db(self, path):
         conn = sqlite3.connect(path)
@@ -321,7 +333,7 @@ class Log_in(ctk.CTkToplevel):
                     cant INTEGER
                 )
                 ''')
-        
+
         cursor.execute('''
                 CREATE TABLE IF NOT EXISTS datos (
                     nombre TEXT PRIMARY KEY,
@@ -334,7 +346,7 @@ class Log_in(ctk.CTkToplevel):
                     cantidad_dias VARCHAR
                 )
                 ''')
-        
+
         cursor.execute('''
                 CREATE TABLE IF NOT EXISTS mensajes (
                     registrar_alimento INTEGER DEFAULT 0,
@@ -346,6 +358,16 @@ class Log_in(ctk.CTkToplevel):
                     historial INTEGER DEFAULT 0
                 )
                 ''')
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS fechas_seleccionadas (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                fecha TEXT NOT NULL,
+                descripcion TEXT DEFAULT 'sin descripción',
+                importancia INTEGER DEFAULT 1
+                )
+            """)
+
         conn.commit()
         conn.close()
 
@@ -455,11 +477,11 @@ class Log_in(ctk.CTkToplevel):
     def limpiar_usuario(self):
         with open('usuario_actual.txt', 'w') as users:
             users.write('')
-    
+
     def escribir_usuario_actual(self):
         with open('usuario_actual.txt', 'w') as users:
             users.write(self.users_combobox.get())
-            
+
     '''
     def temp(self):
         try:
@@ -476,4 +498,3 @@ class Log_in(ctk.CTkToplevel):
         finally:
             conn.close()
     '''
-
