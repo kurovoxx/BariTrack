@@ -19,6 +19,7 @@ from Ventanas.Configuracion import Configuracion
 from Ventanas.Log_In import Log_in
 from Ventanas.Salud import Salud
 from Ventanas.Recordatorio import Recordatorio
+from Ventanas.Calendario import Calendario
 
 class Main(ctk.CTk):
     def __init__(self):
@@ -170,7 +171,7 @@ class Main(ctk.CTk):
 
         self.iconos = util_img.cargar_imagenes(carpeta='./img/icon_img')
 
-        self.btn_registro = ctk.CTkButton(self.menu_lateral, text='Registrar Alimento', image=self.iconos[3], compound='left',
+        self.btn_registro = ctk.CTkButton(self.menu_lateral, text='Registrar Alimento', image=self.iconos[4], compound='left',
                                         width=200, height=50, corner_radius=0, fg_color=azul_medio_oscuro,
                                         hover_color=verde_claro,
                                         command=self.abrir_registro_alimento)
@@ -182,35 +183,42 @@ class Main(ctk.CTk):
                                         command=self.abrir_agregar_alimento)
         self.btn_agregar.pack(side=ctk.TOP)
 
-        self.btn_grafico = ctk.CTkButton(self.menu_lateral, text="Gráfico", image=self.iconos[1], compound='left',
+        self.btn_grafico = ctk.CTkButton(self.menu_lateral, text="Gráfico", image=self.iconos[2], compound='left',
                                         width=200, height=50, corner_radius=0, fg_color=azul_medio_oscuro,
                                         hover_color=verde_claro,
                                         command=self.abrir_grafico)
         self.btn_grafico.pack(side=ctk.TOP)
 
-        self.btn_historial = ctk.CTkButton(self.menu_lateral, text="Historial", image=self.iconos[2], compound='left',
+        self.btn_historial = ctk.CTkButton(self.menu_lateral, text="Historial", image=self.iconos[3], compound='left',
                                         width=200, height=50, corner_radius=0, fg_color=azul_medio_oscuro,
                                         hover_color=verde_claro,
                                         command=self.abrir_historial)
         self.btn_historial.pack(side=ctk.TOP)
 
-        self.btn_en_contruccion = ctk.CTkButton(self.menu_lateral, text="Settings", image=self.iconos[5], compound='left',
+        self.btn_en_contruccion = ctk.CTkButton(self.menu_lateral, text="Settings", image=self.iconos[6], compound='left',
                                             width=200, height=50, corner_radius=0, fg_color=azul_medio_oscuro,
                                             hover_color=verde_claro,
                                             command=self.abrir_configuracion)
         self.btn_en_contruccion.pack(side=ctk.TOP)
 
-        self.btn_salud = ctk.CTkButton(self.menu_lateral, text="Salud", image=self.iconos[4], compound='left',
+        self.btn_salud = ctk.CTkButton(self.menu_lateral, text="Salud", image=self.iconos[5], compound='left',
                                         width=200, height=50, corner_radius=0, fg_color=azul_medio_oscuro,
                                         hover_color=verde_claro,
                                         command=self.abrir_salud)
         self.btn_salud.pack(side=ctk.TOP)
 
-        self.btn_alimentos = ctk.CTkButton(self.menu_lateral, text="Admin-Alimentos", image=self.iconos[6], compound='left',
+        self.btn_calendario = ctk.CTkButton(self.menu_lateral, text="Calendario", image=self.iconos[1], compound='left',
+                                        width=200, height=50, corner_radius=0, fg_color=azul_medio_oscuro,
+                                        hover_color=verde_claro,
+                                        command=self.abrir_calendario)
+        self.btn_calendario.pack(side=ctk.TOP)
+
+        self.btn_alimentos = ctk.CTkButton(self.menu_lateral, text="Admin-Alimentos", image=self.iconos[7], compound='left',
                                         width=200, height=50, corner_radius=0, fg_color=azul_medio_oscuro,
                                         hover_color=verde_claro,
                                         command=self.abrir_alimentos)
         self.btn_alimentos.pack(side=ctk.TOP)
+
         
          # Agregar todos los botones a la lista
         self.botones_menu = [self.btn_registro, self.btn_agregar, self.btn_grafico, self.btn_historial,
@@ -284,12 +292,20 @@ class Main(ctk.CTk):
         self.limpiar_panel(self.cuerpo_principal)
         Salud(self.cuerpo_principal, gris)   
 
+    def abrir_calendario(self):
+        self.resetear_colores_botones()  
+        self.btn_calendario.configure(fg_color=negro_texto)
+        self.btn_calendario.configure(hover_color=negro_texto)
+        self.limpiar_panel(self.cuerpo_principal)
+        Calendario(self.cuerpo_principal, gris)
+
     def abrir_alimentos(self):
         self.resetear_colores_botones()  
         self.btn_alimentos.configure(fg_color=negro_texto)
         self.btn_alimentos.configure(hover_color="negro_texto")
         self.limpiar_panel(self.cuerpo_principal)
         Alimentos(self.cuerpo_principal, gris)
+
         
     def log_in(self):
         Log_in(self)
