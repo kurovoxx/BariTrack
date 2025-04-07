@@ -4,14 +4,8 @@ import re
 from CTkMessagebox import CTkMessagebox
 import sqlite3
 from util.colores import *
-
-
-import customtkinter as ctk
 from tkinter import ttk
 from tkcalendar import DateEntry
-
-import os
-import sqlite3
 from datetime import datetime
 
 

@@ -21,33 +21,51 @@ class Calendario(New_ventana):
         # Crear calendario
         self.calendario = Calendar(
             self.panel_principal, selectmode='day', date_pattern='yyyy-mm-dd', showweeknumbers=False)
-        self.calendario.place(relx=0.5, rely=0.4, anchor="center")
+        self.calendario.place(relx=0.5, rely=0.35, anchor="center")
+
+        # Campo para ingresar la descripción
+        self.entrada_descripcion = ctk.CTkEntry(
+            self.panel_principal, placeholder_text="Escribe una descripción...", width=250, height=35,
+            corner_radius=10, font=("Times New Roman", 14))
+        self.entrada_descripcion.place(relx=0.5, rely=0.55, anchor="center")
 
         # Botón para guardar la fecha seleccionada
         self.boton_guardar = ctk.CTkButton(self.panel_principal, text="Guardar Fecha",
-                                           command=self.guardar_fecha, corner_radius=15, width=200, height=40,
-                                           font=("Times New Roman", 15, "italic"), text_color="white")
+                                        command=self.guardar_fecha, corner_radius=15, width=200, height=40,
+                                        font=("Times New Roman", 15, "italic"), text_color="white")
         self.boton_guardar.place(relx=0.5, rely=0.7, anchor="center")
 
     def guardar_fecha(self):
         fecha_seleccionada = self.calendario.get_date()
+        descripcion = self.entrada_descripcion.get()  # Obtener texto de la entrada
+
+        if not descripcion.strip():
+            CTkMessagebox(title="Campo vacío", message="Por favor ingresa una descripción.",
+                        icon="warning", option_1="Ok")
+            return
+
         try:
             # Conectar a la base de datos
             conn = sqlite3.connect(f"./users/{self.usuario}/alimentos.db")
             cursor = conn.cursor()
 
-            # Insertar la fecha seleccionada
+            # Insertar la fecha y descripción
             cursor.execute(
-                "INSERT INTO fechas_seleccionadas (fecha) VALUES (?)", (fecha_seleccionada,))
+                "INSERT INTO fechas_seleccionadas (fecha, descripcion) VALUES (?,?)",
+                (fecha_seleccionada, descripcion)
+            )
             conn.commit()
 
             CTkMessagebox(title="Fecha Guardada",
-                          message=f"Fecha {fecha_seleccionada} guardada con éxito.", icon='info', option_1="Ok")
+                        message=f"Fecha {fecha_seleccionada} guardada con éxito.", icon='info', option_1="Ok")
 
             conn.close()
 
             # Resaltar la fecha en el calendario
             self.resaltar_fecha(fecha_seleccionada)
+
+            # Limpiar campo de texto
+            self.entrada_descripcion.delete(0, 'end')
 
         except sqlite3.Error as e:
             print(f"Error al guardar la fecha: {e}")
@@ -68,7 +86,7 @@ class Calendario(New_ventana):
         """Cargar las fechas desde la base de datos y resaltarlas en el calendario."""
         try:
             # Conectar a la base de datos
-            conn = sqlite3.connect(f"./users/{self.usuario}/fechas.db")
+            conn = sqlite3.connect(f"./users/{self.usuario}/alimentos.db")
             cursor = conn.cursor()
 
             # Obtener todas las fechas guardadas
