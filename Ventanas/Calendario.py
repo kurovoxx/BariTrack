@@ -20,20 +20,38 @@ class Calendario(New_ventana):
     def add_widget_calendario(self):
         # Crear calendario
         self.calendario = Calendar(
-            self.panel_principal, selectmode='day', date_pattern='yyyy-mm-dd', showweeknumbers=False)
-        self.calendario.place(relx=0.5, rely=0.35, anchor="center")
+            self.panel_principal, selectmode='day', date_pattern='yyyy-mm-dd', showweeknumbers=False, background=azul_medio_oscuro)
+        self.calendario.place(relx=0.25, rely=0.32, anchor="center")
+
+        #Lista de recordatorios (scrolleable)
+
+        self.frame_recordatorios= ctk.CTkScrollableFrame(
+            self.panel_principal, width=350, height=268, corner_radius=15, fg_color=azul_medio_oscuro
+        )
+        self.frame_recordatorios.place(relx=0.72, rely=0.32, anchor="center")
+
+        #Boton para editar los recordatorios#
+
+        self.boton_editar = ctk.CTkButton(self.panel_principal, text="Editar Recordatorios",
+            corner_radius=15, width=200, height=40, font=("Times New Roman", 15, "italic"), text_color="white"
+        )
+        self.boton_editar.place(relx=0.72, rely=0.7, anchor="center")
+
+        
+
+        
 
         # Campo para ingresar la descripción
         self.entrada_descripcion = ctk.CTkEntry(
             self.panel_principal, placeholder_text="Escribe una descripción...", width=250, height=35,
             corner_radius=10, font=("Times New Roman", 14))
-        self.entrada_descripcion.place(relx=0.5, rely=0.55, anchor="center")
+        self.entrada_descripcion.place(relx=0.25, rely=0.55, anchor="center")
 
         # Botón para guardar la fecha seleccionada
         self.boton_guardar = ctk.CTkButton(self.panel_principal, text="Guardar Fecha",
                                         command=self.guardar_fecha, corner_radius=15, width=200, height=40,
                                         font=("Times New Roman", 15, "italic"), text_color="white")
-        self.boton_guardar.place(relx=0.5, rely=0.7, anchor="center")
+        self.boton_guardar.place(relx=0.25, rely=0.7, anchor="center")
 
     def guardar_fecha(self):
         fecha_seleccionada = self.calendario.get_date()
