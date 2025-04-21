@@ -107,6 +107,22 @@ class Main(ctk.CTk):
         ruta_destino = os.path.join(carpeta_usuario, f'perfil{extension}')
         shutil.copy2(ruta_origen, ruta_destino)
         return ruta_destino
+
+    def toggle_submenu_alimentos(self):
+        if self.alimentos_visible:
+            self.submenu_alimentos.pack_forget()
+            self.alimentos_visible = False
+        else:
+            self.submenu_alimentos.pack(side=ctk.TOP)
+            self.alimentos_visible = True
+
+    def toggle_submenu_salud_principal(self):
+        if self.salud_principal_visible:
+            self.submenu_salud_principal.pack_forget()
+            self.salud_principal_visible = False
+        else:
+            self.submenu_salud_principal.pack(side=ctk.TOP)
+            self.salud_principal_visible = True
     
     def guardar_ruta_imagen(self, ruta):
         ruta_json = os.path.join('./users', self.usuario, 'imagen_perfil.json')
@@ -171,58 +187,77 @@ class Main(ctk.CTk):
 
         self.iconos = util_img.cargar_imagenes(carpeta='./img/icon_img')
 
-        self.btn_registro = ctk.CTkButton(self.menu_lateral, text='Registrar Alimento', image=self.iconos[4], compound='left',
-                                        width=200, height=50, corner_radius=0, fg_color=azul_medio_oscuro,
-                                        hover_color=verde_claro,
-                                        command=self.abrir_registro_alimento)
-        self.btn_registro.pack(side=ctk.TOP)
+        # Contenedor para "Alimentos" y sus botones desplegables
+        self.seccion_alimentos = ctk.CTkFrame(self.menu_lateral, fg_color="transparent")
+        self.seccion_alimentos.pack(side=ctk.TOP, fill='x')
 
-        self.btn_agregar = ctk.CTkButton(self.menu_lateral, text="Agregar Alimento", image=self.iconos[0], compound='left',
+        # Botón principal "Alimentos" que despliega/oculta el submenú
+        self.btn_alimentos = ctk.CTkButton(self.seccion_alimentos, text="Alimentos", image=self.iconos[7], compound='left',
                                         width=200, height=50, corner_radius=0, fg_color=azul_medio_oscuro,
-                                        hover_color=verde_claro,
-                                        command=self.abrir_agregar_alimento)
-        self.btn_agregar.pack(side=ctk.TOP)
-
-        self.btn_grafico = ctk.CTkButton(self.menu_lateral, text="Gráfico", image=self.iconos[2], compound='left',
-                                        width=200, height=50, corner_radius=0, fg_color=azul_medio_oscuro,
-                                        hover_color=verde_claro,
-                                        command=self.abrir_grafico)
-        self.btn_grafico.pack(side=ctk.TOP)
-
-        self.btn_historial = ctk.CTkButton(self.menu_lateral, text="Historial", image=self.iconos[3], compound='left',
-                                        width=200, height=50, corner_radius=0, fg_color=azul_medio_oscuro,
-                                        hover_color=verde_claro,
-                                        command=self.abrir_historial)
-        self.btn_historial.pack(side=ctk.TOP)
-
-        self.btn_en_contruccion = ctk.CTkButton(self.menu_lateral, text="Settings", image=self.iconos[6], compound='left',
-                                            width=200, height=50, corner_radius=0, fg_color=azul_medio_oscuro,
-                                            hover_color=verde_claro,
-                                            command=self.abrir_configuracion)
-        self.btn_en_contruccion.pack(side=ctk.TOP)
-
-        self.btn_salud = ctk.CTkButton(self.menu_lateral, text="Salud", image=self.iconos[5], compound='left',
-                                        width=200, height=50, corner_radius=0, fg_color=azul_medio_oscuro,
-                                        hover_color=verde_claro,
-                                        command=self.abrir_salud)
-        self.btn_salud.pack(side=ctk.TOP)
-
-        self.btn_calendario = ctk.CTkButton(self.menu_lateral, text="Calendario", image=self.iconos[1], compound='left',
-                                        width=200, height=50, corner_radius=0, fg_color=azul_medio_oscuro,
-                                        hover_color=verde_claro,
-                                        command=self.abrir_calendario)
-        self.btn_calendario.pack(side=ctk.TOP)
-
-        self.btn_alimentos = ctk.CTkButton(self.menu_lateral, text="Admin-Alimentos", image=self.iconos[7], compound='left',
-                                        width=200, height=50, corner_radius=0, fg_color=azul_medio_oscuro,
-                                        hover_color=verde_claro,
-                                        command=self.abrir_alimentos)
+                                        hover_color=verde_claro, command=self.toggle_submenu_alimentos)
         self.btn_alimentos.pack(side=ctk.TOP)
 
-        
-         # Agregar todos los botones a la lista
-        self.botones_menu = [self.btn_registro, self.btn_agregar, self.btn_grafico, self.btn_historial,
-                             self.btn_en_contruccion, self.btn_salud, self.btn_alimentos]
+        # Crear el frame del submenú de Alimentos (inicialmente oculto)
+        self.submenu_alimentos = ctk.CTkFrame(self.seccion_alimentos, fg_color="transparent")
+        self.submenu_alimentos.pack_forget()  # Oculto al inicio
+
+        # Bandera para saber si está visible o no
+        self.alimentos_visible = False
+
+        # Botones del submenú (dentro del frame)
+        self.btn_registro = ctk.CTkButton(self.submenu_alimentos, text='Registrar Alimento', image=self.iconos[4], compound='left',
+                                        width=200, height=40, corner_radius=0, fg_color=azul_medio_oscuro,
+                                        hover_color=verde_claro, command=self.abrir_registro_alimento)
+        self.btn_registro.pack(side=ctk.TOP)
+
+        self.btn_agregar = ctk.CTkButton(self.submenu_alimentos, text="Agregar Alimento", image=self.iconos[0], compound='left',
+                                        width=200, height=40, corner_radius=0, fg_color=azul_medio_oscuro,
+                                        hover_color=verde_claro, command=self.abrir_agregar_alimento)
+        self.btn_agregar.pack(side=ctk.TOP)
+
+        self.btn_alimentos = ctk.CTkButton(self.submenu_alimentos, text="Admin-Alimentos", image=self.iconos[7], compound='left',
+                                        width=200, height=40, corner_radius=0, fg_color=azul_medio_oscuro,
+                                        hover_color=verde_claro, command=self.abrir_alimentos)
+        self.btn_alimentos.pack(side=ctk.TOP)
+
+        # === Submenú SALUD ===
+
+        self.seccion_salud_principal = ctk.CTkFrame(self.menu_lateral, fg_color="transparent")
+        self.seccion_salud_principal.pack(side=ctk.TOP, fill='x')
+
+        self.btn_salud_principal = ctk.CTkButton(self.seccion_salud_principal, text="Salud", image=self.iconos[7], compound='left',
+                                        width=200, height=50, corner_radius=0, fg_color=azul_medio_oscuro,
+                                        hover_color=verde_claro, command=self.toggle_submenu_salud_principal)
+        self.btn_salud_principal.pack(side=ctk.TOP)
+
+        # Crear el frame del submenú de Alimentos (inicialmente oculto)
+        self.submenu_salud_principal = ctk.CTkFrame(self.seccion_salud_principal, fg_color="transparent")
+        self.submenu_salud_principal.pack_forget()  # Oculto al inicio
+
+        # Bandera para saber si está visible o no
+        self.salud_principal_visible = False
+
+
+        # Botones del submenú (dentro del frame)
+        self.btn_grafico = ctk.CTkButton(self.submenu_salud_principal, text="Gráfico", image=self.iconos[2], compound='left',
+                                        width=200, height=40, corner_radius=0, fg_color=azul_medio_oscuro,
+                                        hover_color=verde_claro, command=self.abrir_grafico)
+        self.btn_grafico.pack(side=ctk.TOP)
+
+        self.btn_salud = ctk.CTkButton(self.submenu_salud_principal, text="Salud", image=self.iconos[5], compound='left',
+                                        width=200, height=40, corner_radius=0, fg_color=azul_medio_oscuro,
+                                        hover_color=verde_claro, command=self.abrir_salud)
+        self.btn_salud.pack(side=ctk.TOP)
+
+        self.btn_calendario = ctk.CTkButton(self.submenu_salud_principal, text="Calendario", image=self.iconos[1], compound='left',
+                                        width=200, height=40, corner_radius=0, fg_color=azul_medio_oscuro,
+                                        hover_color=verde_claro, command=self.abrir_calendario)
+        self.btn_calendario.pack(side=ctk.TOP)
+
+        self.btn_historial = ctk.CTkButton(self.submenu_salud_principal, text="Historial", image=self.iconos[3], compound='left',
+                                        width=200, height=40, corner_radius=0, fg_color=azul_medio_oscuro,
+                                        hover_color=verde_claro, command=self.abrir_historial)
+        self.btn_historial.pack(side=ctk.TOP)
         
         
     def controles_cuerpo(self):
