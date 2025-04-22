@@ -337,7 +337,7 @@ class Main(ctk.CTk):
     def abrir_alimentos(self):
         self.resetear_colores_botones()  
         self.btn_alimentos.configure(fg_color=negro_texto)
-        self.btn_alimentos.configure(hover_color="negro_texto")
+        self.btn_alimentos.configure(hover_color=negro_texto)
         self.limpiar_panel(self.cuerpo_principal)
         Alimentos(self.cuerpo_principal, gris)
 
