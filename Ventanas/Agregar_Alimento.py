@@ -1,10 +1,9 @@
 import customtkinter as ctk
 from CTkMessagebox import CTkMessagebox
 from Ventanas.Ventana_interfaz import New_ventana
-import sqlite3 
+import sqlite3
 import webbrowser
 from util.colores import *
-
 
 
 class Agregar_Alimento(New_ventana):
@@ -22,34 +21,37 @@ class Agregar_Alimento(New_ventana):
         self.cursor = self.conn.cursor()
 
     def add_widget_agregar(self):
-        self.bg_btn_agregar = ctk.CTkButton(self.sub, text='', bg_color=gris, state='disable', width=245, 
+        self.bg_btn_agregar = ctk.CTkButton(self.sub, text='', bg_color=gris, state='disable', width=245,
                                             height=35, corner_radius=20, fg_color=azul_medio_oscuro)
         self.bg_btn_agregar.place(x=85, y=78)
-        
+
         # Label "agregar" de alimentos
-        self.label_agregar = ctk.CTkLabel(self.sub, font=("Arial", 20), text="Agregar Alimentos", text_color="white", fg_color=azul_medio_oscuro, bg_color=azul_medio_oscuro)
+        self.label_agregar = ctk.CTkLabel(self.sub, font=(
+            "Arial", 20), text="Agregar Alimentos", text_color="white", fg_color=azul_medio_oscuro, bg_color=azul_medio_oscuro)
         self.label_agregar.place(x=95, y=80)
 
         self.boton_ayuda = ctk.CTkButton(self.sub, text="i",
                                          command=self.mostrar_advertencia,
                                          corner_radius=15,
                                          width=30, height=30,
-                                         font=("Times New Roman", 25, "italic"),
+                                         font=("Times New Roman",
+                                               25, "italic"),
                                          text_color="white")
         self.boton_ayuda.place(relx=0.97, rely=0.04, anchor="ne")
 
         # entry agregar alimento
-        self.agregar = ctk.CTkEntry(self.sub, corner_radius=20, placeholder_text_color="black", bg_color=gris, 
+        self.agregar = ctk.CTkEntry(self.sub, corner_radius=20, placeholder_text_color="black", bg_color=gris,
                                     placeholder_text="Ingrese el nombre del alimento",
                                     border_width=0, fg_color=color_entry, text_color="black", width=245, height=35)
         self.agregar.place(x=85, y=120)
 
-        self.bg_btn_calorias = ctk.CTkButton(self.sub, text='', bg_color=gris, state='disable', width=245, 
-                                            height=35, corner_radius=20, fg_color=azul_medio_oscuro)
+        self.bg_btn_calorias = ctk.CTkButton(self.sub, text='', bg_color=gris, state='disable', width=245,
+                                             height=35, corner_radius=20, fg_color=azul_medio_oscuro)
         self.bg_btn_calorias.place(x=410, y=78)
 
         # Label "Seleccione Cantidad Calorías"
-        self.label_calorias = ctk.CTkLabel(self.sub, font=("Arial", 20), text="Porcion / 100gr", text_color="white", fg_color=azul_medio_oscuro, bg_color=azul_medio_oscuro)
+        self.label_calorias = ctk.CTkLabel(self.sub, font=(
+            "Arial", 20), text="Porcion / 100gr", text_color="white", fg_color=azul_medio_oscuro, bg_color=azul_medio_oscuro)
         self.label_calorias.place(x=420, y=80)
 
         # Combobox
@@ -62,22 +64,23 @@ class Agregar_Alimento(New_ventana):
         self.api.place(x=600, y=470)
 
     def actualizar_label(self, e):
-        self.bg_btn_cant_calorias = ctk.CTkButton(self.sub, text='', bg_color=gris, state='disable', width=245, 
-                                            height=35, corner_radius=20, fg_color=azul_medio_oscuro)
+        self.bg_btn_cant_calorias = ctk.CTkButton(self.sub, text='', bg_color=gris, state='disable', width=245,
+                                                  height=35, corner_radius=20, fg_color=azul_medio_oscuro)
         self.bg_btn_cant_calorias.place(x=85, y=185)
 
         # Label "calorías"
-        self.label_cant_calorias = ctk.CTkLabel(self.sub, font=("Arial", 20), text="Calorias", text_color="white", bg_color=azul_medio_oscuro)
+        self.label_cant_calorias = ctk.CTkLabel(self.sub, font=(
+            "Arial", 20), text="Calorias", text_color="white", bg_color=azul_medio_oscuro)
         self.label_cant_calorias.place(x=95, y=187)
 
         # Entry calorias
         self.entry_calorias = ctk.CTkEntry(self.sub, corner_radius=20, placeholder_text_color="black",
                                            placeholder_text="Ingrese las calorías",
-                                        border_width=0, fg_color=color_entry, text_color="black", width=245, height=35)
+                                           border_width=0, fg_color=color_entry, text_color="black", width=245, height=35)
         self.entry_calorias.place(x=85, y=227)
 
         # Botón "Añadir Alimento"
-        self.boton_agregar = ctk.CTkButton(self.sub, text="Añadir Alimento", font=("Arial", 20), text_color='black', 
+        self.boton_agregar = ctk.CTkButton(self.sub, text="Añadir Alimento", font=("Arial", 20), text_color='black',
                                            fg_color=verde_boton, hover_color=verde_oscuro, corner_radius=20,
                                            width=240, height=50, border_width=0, command=self.boton_agregar_click)
         self.boton_agregar.place(x=410, y=185)
@@ -109,7 +112,8 @@ class Agregar_Alimento(New_ventana):
             return
 
         # Verificar si el alimento ya existe en la base de datos
-        self.cursor.execute("SELECT * FROM alimento WHERE nombre = ?", (nombre_alimento,))
+        self.cursor.execute(
+            "SELECT * FROM alimento WHERE nombre = ?", (nombre_alimento,))
         resultado = self.cursor.fetchone()
 
         if resultado:
@@ -133,7 +137,8 @@ class Agregar_Alimento(New_ventana):
                           icon='check', option_1="Ok")
 
     def redirigir_api(self):
-        webbrowser.open("https://fitia.app/es/calorias-informacion-nutricional/")
+        webbrowser.open(
+            "https://www.xvideos.es/video.kltphiv2729/gay_amateur_chupa_dos_enormes_pollas_monstruosas_-_porno_gay")
 
     def __del__(self):
         """Cierra la conexión con la base de datos cuando se destruye la instancia."""
