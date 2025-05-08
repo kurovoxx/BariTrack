@@ -12,9 +12,10 @@ class Usuario:
         self.init_lvl_act_fisica()
         self.init_meta_calorias()
         self.init_altura()
+        self.db = f"./users/{self.nombre}/alimentos.db"
 
     def init_contrasena(self):
-        self.contrasena = None
+        self.contrasena = obtener_valor(self.db, 'datos', 'contrasena')
 
     def init_edad(self):
         self.edad = None

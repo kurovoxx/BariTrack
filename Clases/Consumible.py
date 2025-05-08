@@ -1,14 +1,9 @@
 class Consumible:
-    def __init__(self) -> None:
-        self.init_nombre_cons()
-        self.init_cantidad()
-        self.init_tipo_medida()
+    def __init__(self, nombre_cons, cant_cons, tipo_medida) -> None:
+        self.nombre_cons = nombre_cons
+        self.cant_consumible = cant_cons
+        self.tipo_medida = tipo_medida
 
-    def init_nombre_cons(self):
-        self.nombre_cons = None
+    # funciones para hacer update a las características de los alimentos
 
-    def init_cantidad(self):
-        self.cantidad = None
-
-    def init_tipo_medida(self):
-        self.tipo_medida = None
+    # funciones para calcular medidas de solido y líquido
