@@ -7,9 +7,10 @@ import customtkinter as ctk
 import sqlite3
 from CTkMessagebox import CTkMessagebox
 from datetime import datetime
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
-
+from Clases.reporte import GeneradorReporte
+from Sub.PDF import GeneradorPDF
+from Sub.Excel import GeneradorExcel
+from Sub.Texto import GeneradorTexto
 
 class Salud(New_ventana):
     def __init__(self, panel_principal, color):
@@ -65,10 +66,38 @@ class Salud(New_ventana):
                                     text_color="white", font=("Arial", 14))
         self.mensaje_tbm.place(x=500, y=200)
 
-        # Botón para generar PDF
-        self.btn_generar_pdf = ctk.CTkButton(self.sub, text="Generar PDF", width=250, height=50, fg_color=verde_boton, font=("Arial", 18, 'bold'),
-                                     hover_color=verde_oscuro, text_color=azul_medio_oscuro, command=self.generar_pdf, corner_radius=20)
-        self.btn_generar_pdf.place(x=50, y=250)
+        self.opcion_seleccionada = ctk.StringVar(value="pdf")  # Valor por defecto
+
+        self.menu_opciones = ctk.CTkOptionMenu(
+            self.sub,
+            values=["pdf", "excel", "texto"],
+            variable=self.opcion_seleccionada,
+            width=250,
+            height=50,
+            fg_color=verde_boton,
+            button_color=verde_boton,
+            button_hover_color=verde_oscuro,
+            text_color=azul_medio_oscuro,
+            font=("Arial", 18, "bold"),
+            dropdown_font=("Arial", 16),
+            dropdown_text_color=azul_medio_oscuro
+        )
+        self.menu_opciones.place(x=50, y=220)  # Ajusta la coordenada según tu layout
+
+        self.boton_generar = ctk.CTkButton(
+            self.sub,
+            text="Generar reporte",
+            width=250,
+            height=50,
+            fg_color=verde_boton,
+            hover_color=verde_oscuro,
+            text_color=azul_medio_oscuro,
+            corner_radius=20,
+            command=self.GeneradorReporte,
+            font=("Arial", 18, "bold")
+        )
+        self.boton_generar.place(x=50, y=290)  # Ajusta la coordenada según necesites
+
 
 
 
@@ -313,70 +342,27 @@ class Salud(New_ventana):
     
     def pulsaciones(self):
         Pulsaciones(self.sub)
+
+    def GeneradorReporte(self):
+        formato = self.opcion_seleccionada.get()
+
+        calcular_imc = self.calcular_imc  
+        calcular_TMB = self.calcular_TMB  
+        cargar_datos_usuario = self.cargar_datos_usuario
+
+        if formato == "pdf":
+            generador = GeneradorPDF(self.usuario, calcular_imc, calcular_TMB, cargar_datos_usuario)
+        elif formato == "excel":
+            generador = GeneradorExcel(self.usuario, calcular_imc, calcular_TMB, cargar_datos_usuario)
+        elif formato == "texto":
+            generador = GeneradorTexto(self.usuario, calcular_imc, calcular_TMB, cargar_datos_usuario)
+        else:
+            CTkMessagebox(title="Error", message="Formato no soportado", icon="cancel")
+            return
+
+        generador.generar()
+
     
-    def generar_pdf(self):
-        imc = self.calcular_imc()
-        tmb = self.calcular_TMB()
-        fecha = datetime.now().strftime("%d/%m/%Y")
-        nombre_archivo = f"./users/{self.usuario}/salud_{fecha.replace('/', '-')}.pdf"
-
-        # Cargar datos del usuario
-        edad, genero, peso_actual, nivel_actividad, meta_cal, estatura = self.cargar_datos_usuario()
-
-        # Conectar a la base para obtener histórico de peso
-        try:
-            conn = sqlite3.connect(f"./users/{self.usuario}/alimentos.db")
-            cursor = conn.cursor()
-            cursor.execute("SELECT peso, fecha FROM peso ORDER BY fecha DESC LIMIT 5")
-            historial_peso = cursor.fetchall()
-            conn.close()
-        except sqlite3.Error as e:
-            historial_peso = []
-            messagebox.showerror("Error", f"No se pudo obtener el historial de peso: {e}")
-
-        c = canvas.Canvas(nombre_archivo, pagesize=letter)
-        ancho, alto = letter
-
-        c.setFont("Helvetica-Bold", 16)
-        c.drawString(50, alto - 50, f"Reporte de Salud - {self.usuario}")
-        c.setFont("Helvetica", 12)
-        c.drawString(50, alto - 80, f"Fecha: {fecha}")
-
-        # Datos del usuario
-        c.setFont("Helvetica-Bold", 14)
-        c.drawString(50, alto - 120, "Información del usuario:")
-        c.setFont("Helvetica", 12)
-        c.drawString(70, alto - 140, f"Nombre: {self.usuario}")
-        c.drawString(70, alto - 160, f"Edad: {edad}")
-        c.drawString(70, alto - 180, f"Género: {genero}")
-        c.drawString(70, alto - 200, f"Peso actual: {peso_actual} kg")
-        c.drawString(70, alto - 220, f"Estatura: {estatura} cm")
-        c.drawString(70, alto - 240, f"Nivel de actividad: {nivel_actividad}")
-
-        # Datos calculados
-        c.setFont("Helvetica-Bold", 14)
-        c.drawString(50, alto - 280, "Indicadores de salud:")
-        c.setFont("Helvetica", 12)
-        c.drawString(70, alto - 300, f"IMC: {imc:.2f}" if imc else "IMC: Error al calcular")
-        c.drawString(70, alto - 320, f"TMB: {tmb:.2f} kcal/día" if tmb else "TMB: Error al calcular")
-
-        # Histórico de peso
-        c.setFont("Helvetica-Bold", 14)
-        c.drawString(50, alto - 360, "Histórico de peso (últimos 5):")
-        c.setFont("Helvetica-Bold", 12)
-        c.drawString(70, alto - 380, "Fecha")
-        c.drawString(170, alto - 380, "Peso (kg)")
-        c.setFont("Helvetica", 12)
-
-        y = alto - 400
-        for peso, fecha_peso in historial_peso:
-            c.drawString(70, y, str(fecha_peso))
-            c.drawString(170, y, f"{peso} kg")
-            y -= 20  # Espaciado entre filas
-
-        c.save()
-        CTkMessagebox(title="PDF generado", message=f"El archivo se guardó como:\n{nombre_archivo}", icon="check", option_1="OK")
-
     def cargar_datos_usuario(self):
             """Obtiene la edad, el género, la meta de calorías, el nivel de actividad, la altura y el peso más reciente del usuario desde la base de datos."""
             try:
