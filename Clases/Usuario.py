@@ -1,42 +1,19 @@
-from util.query import obtener_valor
-from Usuario import Usuario
-
-
 class Usuario:
-    def __init__(self) -> None:
-        self.nombre = obtener_valor("usuarios.db", 'current_user', 'nombre')
-        self.init_contrasena()
-        self.init_edad()
-        self.init_peso()
-        self.init_sexo()
-        self.init_lvl_act_fisica()
-        self.init_meta_calorias()
-        self.init_altura()
-        self.db = f"./users/{self.nombre}/alimentos.db"
+    def __init__(self, nombre, edad, peso, sexo, lvl_act_fisica, meta_calorias, estatura) -> None:
+        self.nombre = nombre
+        #self.contrasena = contrasena
+        self.edad = edad
+        self.peso = peso
+        self.sexo = sexo
+        self.lvl_act_fisica = lvl_act_fisica
+        self.meta_calorias = meta_calorias
+        self.estatura = estatura
 
-    def init_contrasena(self):
-        self.contrasena = obtener_valor(self.db, 'datos', 'contrasena')
-
-    def init_edad(self):
-        self.edad = None
-
-    def init_peso(self):
-        self.peso = None
-
-    def init_sexo(self):
-        self.sexo = None
-
-    def init_lvl_act_fisica(self):
-        self.lvl_act_fisica = None
-
-    def init_meta_calorias(self):
-        self.meta_calorias = None
-
-    def init_altura(self):
-        self.altura = None
-
-    def init_alimentos(self):
-        pass
+    def test(self):
+        print('olo')
+    
+    def test2(self):
+        print(self.nombre)
 
 
 '''Escribir función para querys en /util'''
