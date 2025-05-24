@@ -1,0 +1,13 @@
+Reporte de Salud - Test2
+Fecha: 14/05/2025
+
+Edad: 23
+Género: Masculino
+Peso actual: 57.0 kg
+Estatura: 170 cm
+Nivel de actividad: Sedentario
+IMC: 19.72
+TMB: 1544.74 kcal/día
+
+Histórico de peso:
+05-04-2025 - 57.0 kg
