@@ -7,6 +7,7 @@ from util.colores import *
 from tkinter import ttk
 from tkcalendar import DateEntry
 from datetime import datetime
+from Clases.SingletonUsuarios import Usuarios
 
 
 class Log_in(ctk.CTkToplevel):
@@ -58,7 +59,7 @@ class Log_in(ctk.CTkToplevel):
         self.users_label.pack(padx=3, pady=(25, 10))
 
         self.users_combobox = ctk.CTkComboBox(
-            self.frame_iniciar, values=self.obtener_usuarios(), width=250, command=self.contra_aparecer, corner_radius=20, fg_color=gris_label,
+            self.frame_iniciar, values=Usuarios().obtener_usuarios(), width=250, command=self.contra_aparecer, corner_radius=20, fg_color=gris_label,
             button_color=verde_boton, button_hover_color=verde_oscuro, text_color=negro_texto)
         self.users_combobox.pack(padx=3, pady=(0, 2))
 
@@ -219,7 +220,7 @@ class Log_in(ctk.CTkToplevel):
                           icon='warning', option_1="Ok")
             return
 
-        elif nombre in self.obtener_usuarios():
+        elif nombre in Usuarios().obtener_usuarios():
             CTkMessagebox(title="Advertencia", message="Este nombre de usuario no está disponible.",
                           icon='warning', option_1="Ok")
             return
@@ -242,7 +243,9 @@ class Log_in(ctk.CTkToplevel):
         directorio = f'./users/{self.nombre_entry.get()}'
         os.makedirs(directorio, exist_ok=True)
         self.crear_db(f"./users/{self.nombre_entry.get()}/alimentos.db")
-        self.insertar_usuario(self.nombre_entry.get(), self.contra_entry.get())
+        ##############################################################################
+        Usuarios().insertar_usuario(self.nombre_entry.get(), self.contra_entry.get()) ############################ Clase singleton 
+        ##############################################################################
 
         try:
             conn = sqlite3.connect(
@@ -365,27 +368,6 @@ class Log_in(ctk.CTkToplevel):
         conn.commit()
         conn.close()
 
-    def insertar_usuario(self, nombre: str, contra: str):
-        try:
-            conn = sqlite3.connect('usuarios.db')
-            cursor = conn.cursor()
-
-            query = "INSERT INTO users (nombre, contra) VALUES (?, ?)"
-            cursor.execute(query, (nombre, contra))
-
-            conn.commit()
-
-            CTkMessagebox(title="Exito", message="Se ha registrado correctamente",
-                          icon='check',
-                          option_1="Ok")
-
-        except sqlite3.IntegrityError:
-            CTkMessagebox(title="Advertencia", message="Nombre de usuario ocupado.",
-                          icon='warning', option_1="Ok")
-
-        finally:
-            conn.close()
-
     def contra_aparecer(self, e):
         try:
             self.contra_label.destroy()
@@ -394,12 +376,12 @@ class Log_in(ctk.CTkToplevel):
         except:
             pass
         self.contra_label = ctk.CTkLabel(
-            self.frame_iniciar, text="Contraseña", width=250, fg_color=azul_medio_oscuro, font=("Arial", 20))
+        self.frame_iniciar, text="Contraseña", width=250, fg_color=azul_medio_oscuro, font=("Arial", 20))
         self.contra_label.configure(corner_radius=20)
         self.contra_label.pack(padx=3, pady=(20, 10))
 
         self.contra_ingreso_entry = ctk.CTkEntry(
-            self.frame_iniciar, width=250, show="*", corner_radius=20, fg_color=color_entry, text_color="black")
+        self.frame_iniciar, width=250, show="*", corner_radius=20, fg_color=color_entry, text_color="black")
         self.contra_ingreso_entry.pack(padx=3, pady=(0, 10))
 
         self.guardar_button = ctk.CTkButton(
@@ -408,27 +390,6 @@ class Log_in(ctk.CTkToplevel):
         )
         self.guardar_button.pack(pady=30)
 
-    def obtener_usuarios(self):
-        try:
-            conn = sqlite3.connect('usuarios.db')
-            cursor = conn.cursor()
-
-            query = "SELECT nombre FROM users"
-            cursor.execute(query)
-
-            usuarios = cursor.fetchall()
-
-            # Extraemos solo el primer valor de cada fila (porque fetchall devuelve una lista de tuplas)
-            lista_usuarios = [usuario[0] for usuario in usuarios]
-
-            return lista_usuarios
-
-        except sqlite3.Error as e:
-            print(f"Error al obtener los usuarios: {e}")
-            return []
-
-        finally:
-            conn.close()
 
     def verificar_contra(self):
         usuario = self.users_combobox.get()
@@ -446,6 +407,7 @@ class Log_in(ctk.CTkToplevel):
             if resultado:
                 # La contraseña en la base de datos es el primer valor de la tupla 'resultado'
                 contraseña_correcta = resultado[0]
+                Usuarios().set_current_user(usuario)
 
                 # Verificar si la contraseña ingresada coincide con la almacenada
                 if contra == contraseña_correcta:
