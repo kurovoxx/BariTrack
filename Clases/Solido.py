@@ -17,3 +17,10 @@ class Solido(Consumible):
     
     def __str__(self):
         return f"Sólido: {self.nombre_cons} - {self.cant_consumible} {self.tipo_medida}"
+
+    def clone(self):
+        return Solido(
+            self.nombre_cons, 
+            self.cant_consumible, 
+            self.tipo_medida
+        )

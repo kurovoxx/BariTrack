@@ -28,3 +28,10 @@ class Liquido(Consumible):
     
     def __str__(self):
         return f"Líquido: {self.nombre_cons} - {self.cant_consumible} {self.tipo_medida}"
+    
+    def clone(self):
+        return Liquido(
+            self.nombre_cons, 
+            self.cant_consumible, 
+            self.tipo_medida
+        )
