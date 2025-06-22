@@ -1,11 +1,12 @@
 from query import obtener_valor
 from Usuario import Usuario
+from InterfaceBuilder import Builder
 
 
 for i in range(100):
     print(obtener_valor("usuarios.db", 'current_user', 'nombre'))
 
-class BuilderUsuario:
+class BuilderUsuario(Builder):
     def __init__(self) -> None:
         self.nombre = obtener_valor("usuarios.db", 'current_user', 'nombre')
         self.db = f"./users/{self.nombre}/alimentos.db"

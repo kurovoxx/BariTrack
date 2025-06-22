@@ -1,7 +1,8 @@
 from DataBase import DataBase
+from InterfaceAdapter import Adapter
 
 
-class AdapterDb:
+class AdapterDb(Adapter):
     def __init__(self, route):
         self.db = DataBase(route)
         self.db.conectar()
